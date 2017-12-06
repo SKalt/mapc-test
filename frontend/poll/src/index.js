@@ -5,7 +5,6 @@ import {point} from '@turf/helpers';
 import * as wfst from 'geojson-to-wfs-t-2';
 import {getCoordinates, updateCoordinates} from './updateCoordinates.js';
 
-var coordinates;
 const map = new L.map('map').setView([ 42.36, -71.0589], 13);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -36,6 +35,7 @@ const post = (body) => fetch(GEOSERVER_URL, {
 
 function submit(){
   const response = getResponse();
+  const coordinates = getCoordinates();
   if (response && coordinates){
     const transaction = wfst.Transaction(
       wfst.Insert(
