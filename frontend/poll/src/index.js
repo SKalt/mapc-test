@@ -2,7 +2,7 @@
 // set up the map
 // state and map will be globals for the moment for ease of development
 import {point} from '@turf/helpers';
-import wfst from 'geojson-to-wfst-2';
+import * as wfst from 'geojson-to-wfs-t-2';
 
 var coordinates;
 const map = new L.map('map').setView([-71, 42], 13);
@@ -22,10 +22,10 @@ const geocoder = L.control.geocoder('MZ_API_KEY', {
  * @param  {Number[]|Object} lngLatLike a wgs84 coordinate array or {lng, lat}
  * @return undefined
  */
-function updateCoordinates(lngLatLike){
+function updateCoordinates(lngLatLike=[]){
   let [lng, lat] = lngLatLike;
-  const check = (...args) => args.all(
-    n => n.consructor == Number && 180 > n > -180
+  const check = (...args) => args.every(
+    n => n && n.consructor == Number && 180 > n > -180
   );
   if (check(lng, lat)){
     coordinates = lngLatLike;

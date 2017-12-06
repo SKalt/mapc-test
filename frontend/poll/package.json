@@ -4,7 +4,9 @@
   "description": "A geographic poll",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "cp ./index.html dist/ && cp ./style.css dist/ && webpack-dev-server --open --watch",
+    "build": "webpack --optimize-minimize"
   },
   "keywords": [
     "GIS",
@@ -28,5 +30,9 @@
     "mocha": "^4.0.1",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5"
+  },
+  "dependencies": {
+    "@turf/helpers": "^5.0.4",
+    "geojson-to-wfs-t-2": "^1.1.5"
   }
 }
