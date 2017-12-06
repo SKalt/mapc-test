@@ -35,7 +35,7 @@ module.exports = (env={}) => {
     plugins: [
       new webpack.DefinePlugin(Object.assign({ // defaults
         ENV: '"debugging"',
-        // TODO: define GEOSERVER_URL
+        GEOSERVER_URL: 'https://www.example.com', // TODO: fill in geoserver url 
         MB_ACCESS_TOKEN: `'${fs.readFileSync('api-keys/mapbox.txt', 'utf8').trim()}'`,
         MZ_API_KEY: `'${fs.readFileSync('api-keys/mapzen.txt', 'utf8').trim()}'`
       }, env)),
