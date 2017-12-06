@@ -1,0 +1,23 @@
+{
+  "tests": "tests/integration/*.test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+     "WebDriverIO" : {
+       "smartWait": 5000,
+       "browser": "chrome",
+       "restart": false,
+       "windowSize": "maximize",
+       "timeouts": {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   },
+  "include": {
+    "I": "./steps_file.js"
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "poll"
+}
