@@ -14,6 +14,7 @@ module.exports = function() {
     },
     checkCoordinatesAre(expected){
       // this uses an eval statement
+      /*global coordinates*/
       this.executeScript(()=>coordinates).then(
         coordinates => assert.deepEqual(
           coordinates, expected, `${coordinates} are not ${expected}`
