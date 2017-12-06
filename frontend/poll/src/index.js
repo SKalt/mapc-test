@@ -3,7 +3,6 @@
 // state and map will be globals for the moment for ease of development
 import {point} from '@turf/helpers';
 import * as wfst from 'geojson-to-wfs-t-2';
-import {getCoordinates, updateCoordinates} from './updateCoordinates.js';
 
 const map = new L.map('map').setView([ 42.36, -71.0589], 13);
 
@@ -16,10 +15,32 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 const geocoder = L.control.geocoder(MZ_API_KEY, {
   placeholder: 'Search your place of residence'
-});
+}).addTo(map);
 
-map.on('click', e => updateCoordinates(e.lnglat));
-geocoder.on('select', e => updateCoordinates(e.feature.geometry.coordinates));
+var coordinates;
+var marker;
+
+/**
+ * Updates the response coordinates;
+ * @param  {Number[]|Object} point a wgs84 coordinate array or {lng, lat}
+ * @return undefined
+ */
+function updateCoordinates(point){
+  coordinates = point;
+  if (!marker){
+    marker = L.marker(coordinates).addTo(map);
+  } else {
+    marker.setLatLng(coordinates);
+  }
+}
+
+const getCoordinates = ()=>coordinates;
+
+
+map.on('click', e => updateCoordinates(e.latlng));
+geocoder.on('select', e => updateCoordinates(
+  e.feature.geometry.coordinates.reverse()
+));
 
 const getResponse = (function formListenClosure(){
   let response = '';
@@ -35,8 +56,11 @@ const post = (body) => fetch(GEOSERVER_URL, {
 
 function submit(){
   const response = getResponse();
-  const coordinates = getCoordinates();
+  let coordinates = getCoordinates();
   if (response && coordinates){
+    if (!Array.isArray(coordinates)){
+      coordinates = [coordinates.lng, coordinates.lat];
+    }
     const transaction = wfst.Transaction(
       wfst.Insert(
         point(coordinates, {response})
